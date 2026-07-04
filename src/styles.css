@@ -1,0 +1,244 @@
+#band-stickers-root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  margin: 0 2px;
+  z-index: 25;
+}
+
+#band-stickers-button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(63, 67, 80, 0.64);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+#band-stickers-button svg {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+#band-stickers-button:hover,
+#band-stickers-button:focus-visible {
+  background: rgba(28, 88, 217, 0.09);
+  color: #1c58d9;
+  outline: none;
+}
+
+#band-stickers-panel {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  width: min(430px, calc(100vw - 32px));
+  max-height: 390px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 35, 51, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 48px rgba(18, 28, 45, 0.18);
+  z-index: 2147483647;
+}
+
+#band-stickers-panel[hidden] {
+  display: none;
+}
+
+.band-stickers-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(26, 35, 51, 0.1);
+  color: #1f2937;
+}
+
+.band-stickers-title {
+  font: 700 14px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.band-stickers-body {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  height: 302px;
+  min-height: 0;
+}
+
+.band-stickers-packs {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(26, 35, 51, 0.1);
+  background: #f7f8fb;
+  padding: 7px;
+}
+
+.band-stickers-pack {
+  display: block;
+  align-items: center;
+  min-height: 30px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #3f4858;
+  cursor: pointer;
+  padding: 6px 8px;
+  text-align: left;
+  font: 650 12px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.band-stickers-pack span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.band-stickers-pack:hover,
+.band-stickers-pack:focus-visible,
+.band-stickers-pack.is-active {
+  border-color: rgba(28, 88, 217, 0.24);
+  background: #ffffff;
+  color: #1c58d9;
+  outline: none;
+}
+
+.band-stickers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 86px;
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.band-sticker-item {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 86px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #f7f8fb;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 6px;
+  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+
+.band-sticker-item:hover,
+.band-sticker-item:focus-visible {
+  border-color: #1c58d9;
+  background: #eef4ff;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.band-sticker-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.band-stickers-empty {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  padding: 16px;
+  color: #6b7280;
+  text-align: center;
+  font: 600 12px/1.4 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.band-stickers-footer {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 30px;
+  border-top: 1px solid rgba(26, 35, 51, 0.1);
+  padding: 6px 10px;
+}
+
+.band-stickers-options {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.band-stickers-option {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: #5d687a;
+  cursor: pointer;
+  font: 600 11px/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  user-select: none;
+}
+
+.band-stickers-option input {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  accent-color: #1c58d9;
+}
+
+.band-stickers-status {
+  min-height: 16px;
+  overflow: hidden;
+  color: #32611f;
+  font: 500 11px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.band-stickers-status.is-error {
+  color: #ad1f1f;
+}
+
+@media (max-width: 520px) {
+  #band-stickers-panel {
+    width: min(360px, calc(100vw - 18px));
+  }
+
+  .band-stickers-body {
+    grid-template-columns: 104px 1fr;
+    height: 270px;
+  }
+
+  .band-stickers-grid {
+    grid-auto-rows: 74px;
+  }
+
+  .band-sticker-item {
+    height: 74px;
+  }
+
+  .band-stickers-status {
+    text-align: left;
+  }
+
+  .band-stickers-footer {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
