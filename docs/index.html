@@ -341,12 +341,12 @@
       <div class="hero-inner">
         <div>
           <h1>Band Mattermost Stickers</h1>
-        <p class="lead">Расширение добавляет компактный выбор стикеров в Mattermost на домене band.wb.ru, ставит кнопку между emoji и upload, а выбранный стикер передает как PNG-вложение в штатный композер.</p>
+        <p class="lead">Расширение добавляет компактный выбор стикеров в Mattermost на домене band.wb.ru, ставит кнопку между emoji и upload в основном композере и тредах, а выбранный стикер передает как PNG-вложение в активное поле.</p>
           <div class="badges" aria-label="Ключевые параметры">
             <span class="badge">Manifest V3</span>
             <span class="badge">Только band.wb.ru</span>
-            <span class="badge">5 папок стикеров</span>
-            <span class="badge">67 стикеров</span>
+            <span class="badge">6 папок стикеров</span>
+            <span class="badge">105 стикеров</span>
             <span class="badge">128x128 по умолчанию</span>
             <span class="badge">Моментальная отправка</span>
             <span class="badge">⌘⌥S</span>
@@ -414,7 +414,7 @@
       <section>
         <h2>Схема работы</h2>
         <div class="flow" aria-label="Схема работы расширения">
-          <div class="node">Mattermost composer</div>
+          <div class="node">Mattermost composer / thread</div>
           <div class="node arrow">→</div>
           <div class="node">Emoji → stickers → upload</div>
           <div class="node arrow">→</div>
@@ -424,7 +424,12 @@
 
       <section>
         <h2>Текущие стикерпаки</h2>
-        <p>Подключены <code>PUSI</code> с 27 WebP/PNG, <code>ASIA</code> с 16 WebP, <code>MONIKA</code> с 17 WebP, <code>Конкуренты</code> с двумя WebP, <code>PUPA</code> с 38 WebP и <code>Жириновский</code> с пятью WebP. Первая вкладка <code>Популярные</code> строится из локальной статистики использования. Для каждого стикера есть маленький PNG 128x128 в <code>stickers_128/</code>. По умолчанию отправляется маленький файл; чекбокс <code>bigstic</code> включает отправку оригинального размера. Перед загрузкой WebP конвертируется в PNG. Во время прикрепления файла расширение кратко держит в композере невидимый символ <code>U+200B</code>, затем удаляет его и при включенной моментальной отправке нажимает кнопку отправки.</p>
+        <p>Подключены <code>PUSI</code> с 27 WebP/PNG, <code>ASIA</code> с 16 WebP, <code>MONIKA</code> с 17 WebP, <code>Конкуренты</code> с двумя WebP, <code>PUPA</code> с 38 WebP и <code>Жириновский</code> с пятью WebP. Первая вкладка <code>Популярные</code> строится из локальной статистики использования. Для каждого стикера есть маленький PNG 128x128 в <code>stickers_128/</code>. По умолчанию отправляется маленький файл; чекбокс <code>bigstic</code> включает отправку оригинального размера. Перед загрузкой WebP конвертируется в PNG. Во время прикрепления файла расширение кратко держит в активном композере невидимый символ <code>U+200B</code>, затем удаляет его и при включенной моментальной отправке нажимает кнопку отправки.</p>
+      </section>
+
+      <section>
+        <h2>Автопроверки</h2>
+        <p>В GitHub Actions добавлены проверки синтаксиса, валидности manifest, консистентности реестра стикеров и базовой безопасности расширения. Они защищают от пропущенных файлов, неверных 128 PNG, лишних permissions и расширения домена за пределы <code>https://band.wb.ru/*</code>.</p>
         <details>
           <summary>Как добавить новый файл</summary>
           <p>Добавьте WebP или PNG в папку нужного пака, сгенерируйте PNG 128x128 в <code>stickers_128/</code>, затем зарегистрируйте <code>path</code> и <code>smallPath</code> в <code>src/stickers.js</code> и разрешите оба файла в <code>manifest.json</code>. Для технических папок используйте ASCII-имена, например <code>stickers/ZHIRINOVSKIY/</code>. Новый пак добавляется отдельным объектом в <code>window.BAND_STICKER_PACKS</code>.</p>

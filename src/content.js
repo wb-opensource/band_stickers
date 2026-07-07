@@ -1,6 +1,6 @@
 (function initBandMattermostStickers() {
-  const ROOT_ID = "band-stickers-root";
-  const BUTTON_ID = "band-stickers-button";
+  const ROOT_CLASS = "band-stickers-root";
+  const BUTTON_CLASS = "band-stickers-button";
   const PANEL_ID = "band-stickers-panel";
   const INSTANT_SEND_CHECKBOX_ID = "band-stickers-instant-send";
   const BIG_STICKER_CHECKBOX_ID = "band-stickers-bigstic";
@@ -13,19 +13,42 @@
   const packs = window.BAND_STICKER_PACKS || [];
 
   let activeInput = null;
+  let activeRoot = null;
   let activePackId = POPULAR_PACK_ID;
   let instantSendEnabled = true;
   let bigStickerEnabled = false;
   let globalListenersAttached = false;
   let statusTimer = null;
+  let composerIdCounter = 0;
 
   function findComposerInput() {
+    if (activeInput?.isConnected) {
+      return activeInput;
+    }
+
     return (
       document.querySelector("#post_textbox") ||
       document.querySelector("[data-testid='post_textbox']") ||
       document.querySelector("textarea[aria-label*='message' i]") ||
       document.querySelector("div[contenteditable='true'][role='textbox']")
     );
+  }
+
+  function findComposerInputs() {
+    return Array.from(
+      document.querySelectorAll(
+        "#post_textbox, [data-testid='post_textbox'], textarea[aria-label*='message' i], div[contenteditable='true'][role='textbox']"
+      )
+    );
+  }
+
+  function getComposerId(input) {
+    if (!input.dataset.bandStickersComposerId) {
+      composerIdCounter += 1;
+      input.dataset.bandStickersComposerId = String(composerIdCounter);
+    }
+
+    return input.dataset.bandStickersComposerId;
   }
 
   function findComposerContainer(input) {
@@ -37,6 +60,9 @@
       input.closest("#create_post") ||
       input.closest(".post-textbox__container") ||
       input.closest(".post-create__container") ||
+      input.closest(".thread-reply") ||
+      input.closest(".ThreadViewer") ||
+      input.closest("#rhsContainer") ||
       input.closest("form") ||
       input.parentElement
     );
@@ -51,16 +77,14 @@
     const emojiButton =
       container.querySelector("#emojiPickerButton") ||
       container.querySelector("[data-testid='emojiPickerButton']") ||
-      container.querySelector("button[aria-label*='emoji' i]") ||
-      document.querySelector("#emojiPickerButton, [data-testid='emojiPickerButton']");
+      container.querySelector("button[aria-label*='emoji' i]");
 
     const uploadButton =
       container.querySelector("#fileUploadButton") ||
       container.querySelector("[data-testid='fileUploadButton']") ||
       container.querySelector("button[aria-label*='file' i]") ||
       container.querySelector("button[aria-label*='upload' i]") ||
-      container.querySelector("input[type='file']")?.closest("button, label, div") ||
-      document.querySelector("#fileUploadButton, [data-testid='fileUploadButton']");
+      container.querySelector("input[type='file']")?.closest("button, label, div");
 
     if (emojiButton?.parentElement && uploadButton?.parentElement === emojiButton.parentElement) {
       return {
@@ -223,24 +247,26 @@
 
   function closePanel() {
     const panel = document.getElementById(PANEL_ID);
-    const button = document.getElementById(BUTTON_ID);
     if (panel) {
       panel.hidden = true;
     }
-    if (button) {
+    document.querySelectorAll(`.${BUTTON_CLASS}`).forEach((button) => {
       button.setAttribute("aria-expanded", "false");
-    }
+    });
   }
 
   function openPanel() {
     const panel = document.getElementById(PANEL_ID) || createPanel();
-    const button = document.getElementById(BUTTON_ID);
+    const button = activeRoot?.querySelector(`.${BUTTON_CLASS}`);
 
     if (!panel) {
       return;
     }
 
     panel.hidden = false;
+    document.querySelectorAll(`.${BUTTON_CLASS}`).forEach((otherButton) => {
+      otherButton.setAttribute("aria-expanded", "false");
+    });
     if (button) {
       button.setAttribute("aria-expanded", "true");
     }
@@ -249,13 +275,16 @@
 
   function togglePanelState() {
     const panel = document.getElementById(PANEL_ID) || createPanel();
-    const button = document.getElementById(BUTTON_ID);
+    const button = activeRoot?.querySelector(`.${BUTTON_CLASS}`);
 
     if (!panel) {
       return;
     }
 
     panel.hidden = !panel.hidden;
+    document.querySelectorAll(`.${BUTTON_CLASS}`).forEach((otherButton) => {
+      otherButton.setAttribute("aria-expanded", "false");
+    });
     if (button) {
       button.setAttribute("aria-expanded", String(!panel.hidden));
     }
@@ -266,7 +295,7 @@
   }
 
   function positionPanel() {
-    const button = document.getElementById(BUTTON_ID);
+    const button = activeRoot?.querySelector(`.${BUTTON_CLASS}`);
     const panel = document.getElementById(PANEL_ID);
 
     if (!button || !panel || panel.hidden) {
@@ -395,12 +424,24 @@
     return label;
   }
 
-  function createRoot() {
+  function setActiveComposer(input, root) {
+    if (input?.isConnected) {
+      activeInput = input;
+    }
+    if (root?.isConnected) {
+      activeRoot = root;
+    }
+  }
+
+  function createRoot(input) {
     const root = document.createElement("div");
-    root.id = ROOT_ID;
+    root.className = ROOT_CLASS;
+    root.dataset.bandStickersComposerId = getComposerId(input);
+    root.addEventListener("pointerdown", () => setActiveComposer(input, root));
+    root.addEventListener("focusin", () => setActiveComposer(input, root));
 
     const button = document.createElement("button");
-    button.id = BUTTON_ID;
+    button.className = BUTTON_CLASS;
     button.type = "button";
     button.title = "Стикеры";
     button.setAttribute("aria-label", "Открыть стикеры");
@@ -415,11 +456,13 @@
       "<path d='M15.25 10.25h.01'/>",
       "</svg>"
     ].join("");
-    button.addEventListener("pointerdown", togglePanel);
-    button.addEventListener("click", handleButtonClick);
+    button.addEventListener("pointerdown", (event) => togglePanel(event, input, root));
+    button.addEventListener("click", (event) => handleButtonClick(event, input, root));
 
     root.append(button);
-    createPanel();
+    if (!document.getElementById(PANEL_ID)) {
+      createPanel();
+    }
 
     attachGlobalListeners();
 
@@ -434,10 +477,10 @@
     globalListenersAttached = true;
 
     document.addEventListener("click", (event) => {
-      const currentRoot = document.getElementById(ROOT_ID);
+      const currentRoot = event.target.closest?.(`.${ROOT_CLASS}`);
       const currentPanel = document.getElementById(PANEL_ID);
 
-      if (!currentRoot?.contains(event.target) && !currentPanel?.contains(event.target)) {
+      if (!currentRoot && !currentPanel?.contains(event.target)) {
         closePanel();
       }
     });
@@ -459,20 +502,21 @@
     event.stopPropagation();
   }
 
-  function handleButtonClick(event) {
+  function handleButtonClick(event, input, root) {
     event.preventDefault();
     event.stopPropagation();
 
     if (event.detail === 0) {
-      togglePanel(event);
+      togglePanel(event, input, root);
     }
   }
 
-  function togglePanel(event) {
+  function togglePanel(event, input, root) {
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
 
+    setActiveComposer(input, root);
     togglePanelState();
   }
 
@@ -488,7 +532,7 @@
     event.preventDefault();
     event.stopPropagation();
 
-    mountPicker();
+    mountPickers();
     const panel = document.getElementById(PANEL_ID);
 
     if (panel && !panel.hidden) {
@@ -627,7 +671,7 @@
     dataTransfer.items.add(file);
 
     const fileInput =
-      document.querySelector("#fileUploadInput") ||
+      target.querySelector?.("#fileUploadInput") ||
       target.querySelector?.("input[type='file']") ||
       document.querySelector("input[type='file'][accept*='image'], input[type='file']");
 
@@ -771,19 +815,18 @@
     }
   }
 
-  function mountPicker() {
-    const input = findComposerInput();
+  function mountPicker(input) {
     const actionRow = findComposerActionRow(input);
 
     if (!input || !actionRow?.row) {
       return;
     }
 
-    activeInput = input;
+    const composerId = getComposerId(input);
+    let root = actionRow.row.querySelector(`.${ROOT_CLASS}[data-band-stickers-composer-id="${composerId}"]`);
 
-    let root = document.getElementById(ROOT_ID);
     if (!root) {
-      root = createRoot();
+      root = createRoot(input);
     }
     if (!document.getElementById(PANEL_ID)) {
       createPanel();
@@ -808,6 +851,13 @@
     }
   }
 
+  function mountPickers() {
+    const inputs = findComposerInputs();
+    for (const input of inputs) {
+      mountPicker(input);
+    }
+  }
+
   function rememberActiveInput(event) {
     const input = event.target.closest
       ? event.target.closest("#post_textbox, [data-testid='post_textbox'], textarea, div[contenteditable='true'][role='textbox']")
@@ -815,6 +865,8 @@
 
     if (input) {
       activeInput = input;
+      const composerId = getComposerId(input);
+      activeRoot = document.querySelector(`.${ROOT_CLASS}[data-band-stickers-composer-id="${composerId}"]`) || activeRoot;
     }
   }
 
@@ -824,10 +876,10 @@
   }
 
   document.addEventListener("focusin", rememberActiveInput);
-  mountPicker();
+  mountPickers();
 
   const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(mountPicker);
+    window.requestAnimationFrame(mountPickers);
   });
 
   observer.observe(document.documentElement, {
