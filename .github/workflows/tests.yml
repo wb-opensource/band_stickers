@@ -29,5 +29,8 @@ jobs:
       - name: Check sticker consistency
         run: node tests/sticker-consistency.test.js
 
+      - name: Check content behavior
+        run: node tests/content-behavior.test.js
+
       - name: Check project security
         run: node tests/security.test.js

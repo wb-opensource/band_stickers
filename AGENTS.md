@@ -27,6 +27,7 @@ Chrome Extension Manifest V3 для добавления локальных ст
 - Во время прикрепления файла нужно кратко держать невидимый символ `U+200B` в активном композере Mattermost, затем удалить его до автоотправки.
 - При добавлении файла стикера обновлять `manifest.json` в `web_accessible_resources`.
 - Для GitHub Actions поддерживать проверки консистентности стикеров и базовой безопасности проекта.
+- Защищать вызовы `chrome.runtime.getURL` от `Extension context invalidated`: после перезагрузки расширения старая вкладка Mattermost не должна падать с uncaught-ошибкой.
 
 ## Проверка
 
@@ -40,7 +41,7 @@ Chrome Extension Manifest V3 для добавления локальных ст
 - Проверить автоотправку с включенной `Моментальная отправка` и ручной режим с выключенной опцией.
 - Проверить отправку маленького стикера по умолчанию и оригинала при включенном `bigstic`.
 - Проверить отсутствие `ERR_FILE_NOT_FOUND` для каждого файла из `src/stickers.js`.
-- Запустить `node tests/sticker-consistency.test.js` и `node tests/security.test.js`.
+- Запустить `node tests/sticker-consistency.test.js`, `node tests/content-behavior.test.js` и `node tests/security.test.js`.
 
 ## Общие инструкции пользователя
 

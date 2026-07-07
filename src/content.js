@@ -10,6 +10,20 @@
   const STATUS_TIMEOUT_MS = 2800;
   const COMPOSER_PRIME_CHARACTER = "\u200B";
   const SEND_TIMEOUT_MS = 5000;
+  const COMPOSER_INPUT_SELECTOR = [
+    "#post_textbox",
+    "#reply_textbox",
+    "[data-testid='post_textbox']",
+    "[data-testid='reply_textbox']",
+    "textarea[aria-label*='message' i]",
+    "textarea[aria-label*='reply' i]",
+    "textarea[aria-label*='ответ' i]",
+    "textarea[aria-label*='обсуж' i]",
+    "div[contenteditable='true'][role='textbox']",
+    "div[contenteditable='true'][aria-label*='reply' i]",
+    "div[contenteditable='true'][aria-label*='ответ' i]",
+    "div[contenteditable='true'][aria-label*='обсуж' i]"
+  ].join(", ");
   const packs = window.BAND_STICKER_PACKS || [];
 
   let activeInput = null;
@@ -20,6 +34,8 @@
   let globalListenersAttached = false;
   let statusTimer = null;
   let composerIdCounter = 0;
+  let extensionContextInvalidated = false;
+  let observer = null;
 
   function findComposerInput() {
     if (activeInput?.isConnected) {
@@ -27,19 +43,12 @@
     }
 
     return (
-      document.querySelector("#post_textbox") ||
-      document.querySelector("[data-testid='post_textbox']") ||
-      document.querySelector("textarea[aria-label*='message' i]") ||
-      document.querySelector("div[contenteditable='true'][role='textbox']")
+      document.querySelector(COMPOSER_INPUT_SELECTOR)
     );
   }
 
   function findComposerInputs() {
-    return Array.from(
-      document.querySelectorAll(
-        "#post_textbox, [data-testid='post_textbox'], textarea[aria-label*='message' i], div[contenteditable='true'][role='textbox']"
-      )
-    );
+    return Array.from(document.querySelectorAll(COMPOSER_INPUT_SELECTOR));
   }
 
   function getComposerId(input) {
@@ -60,9 +69,12 @@
       input.closest("#create_post") ||
       input.closest(".post-textbox__container") ||
       input.closest(".post-create__container") ||
+      input.closest(".post-create__form") ||
       input.closest(".thread-reply") ||
+      input.closest(".ThreadReply") ||
       input.closest(".ThreadViewer") ||
       input.closest("#rhsContainer") ||
+      input.closest("[aria-label*='обсуж' i]") ||
       input.closest("form") ||
       input.parentElement
     );
@@ -199,7 +211,10 @@
     const image = document.createElement("img");
     image.alt = sticker.title;
     image.loading = "lazy";
-    image.src = extensionUrl(sticker.path);
+    const imageUrl = extensionUrl(sticker.path);
+    if (imageUrl) {
+      image.src = imageUrl;
+    }
 
     item.append(image);
     item.addEventListener("click", () => sendSticker(sticker));
@@ -242,7 +257,33 @@
   }
 
   function extensionUrl(path) {
-    return chrome.runtime.getURL(path);
+    if (extensionContextInvalidated) {
+      return "";
+    }
+
+    try {
+      return chrome.runtime.getURL(path);
+    } catch (error) {
+      handleInvalidExtensionContext(error);
+      return "";
+    }
+  }
+
+  function isInvalidExtensionContextError(error) {
+    return String(error?.message || error).includes("Extension context invalidated");
+  }
+
+  function handleInvalidExtensionContext(error) {
+    if (!isInvalidExtensionContextError(error)) {
+      throw error;
+    }
+
+    extensionContextInvalidated = true;
+    observer?.disconnect();
+    closePanel();
+    document.querySelectorAll(`.${ROOT_CLASS}`).forEach((root) => root.remove());
+    document.getElementById(PANEL_ID)?.remove();
+    console.info("[Band Stickers] Extension was reloaded. Refresh the Mattermost tab to activate stickers again.");
   }
 
   function closePanel() {
@@ -649,7 +690,12 @@
   }
 
   async function loadStickerFile(sticker) {
-    const response = await fetch(extensionUrl(getStickerSourcePath(sticker)));
+    const stickerUrl = extensionUrl(getStickerSourcePath(sticker));
+    if (!stickerUrl) {
+      throw new Error("Extension was reloaded. Refresh the Mattermost tab to use stickers again.");
+    }
+
+    const response = await fetch(stickerUrl);
     if (!response.ok) {
       throw new Error(`Sticker asset failed to load: ${response.status}`);
     }
@@ -816,6 +862,10 @@
   }
 
   function mountPicker(input) {
+    if (extensionContextInvalidated) {
+      return;
+    }
+
     const actionRow = findComposerActionRow(input);
 
     if (!input || !actionRow?.row) {
@@ -852,6 +902,10 @@
   }
 
   function mountPickers() {
+    if (extensionContextInvalidated) {
+      return;
+    }
+
     const inputs = findComposerInputs();
     for (const input of inputs) {
       mountPicker(input);
@@ -860,7 +914,7 @@
 
   function rememberActiveInput(event) {
     const input = event.target.closest
-      ? event.target.closest("#post_textbox, [data-testid='post_textbox'], textarea, div[contenteditable='true'][role='textbox']")
+      ? event.target.closest(COMPOSER_INPUT_SELECTOR)
       : null;
 
     if (input) {
@@ -878,7 +932,7 @@
   document.addEventListener("focusin", rememberActiveInput);
   mountPickers();
 
-  const observer = new MutationObserver(() => {
+  observer = new MutationObserver(() => {
     window.requestAnimationFrame(mountPickers);
   });
 

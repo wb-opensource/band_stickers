@@ -74,6 +74,7 @@ GitHub Actions запускает:
 
 - `node --check` для `src/stickers.js` и `src/content.js`.
 - `tests/sticker-consistency.test.js` — уникальность паков и стикеров, наличие файлов, поддерживаемые форматы, PNG 128x128 для `smallPath`, упоминание паков в документации.
+- `tests/content-behavior.test.js` — наличие селекторов для основного композера и обсуждений Mattermost, а также защита от инвалидированного контекста расширения.
 - `tests/security.test.js` — Manifest V3, ограничение `https://band.wb.ru/*`, отсутствие широких permissions и опасных паттернов в исходниках.
 
 ## Документация

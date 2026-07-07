@@ -429,7 +429,7 @@
 
       <section>
         <h2>Автопроверки</h2>
-        <p>В GitHub Actions добавлены проверки синтаксиса, валидности manifest, консистентности реестра стикеров и базовой безопасности расширения. Они защищают от пропущенных файлов, неверных 128 PNG, лишних permissions и расширения домена за пределы <code>https://band.wb.ru/*</code>.</p>
+        <p>В GitHub Actions добавлены проверки синтаксиса, валидности manifest, консистентности реестра стикеров, селекторов композеров Mattermost и базовой безопасности расширения. Они защищают от пропущенных файлов, неверных 128 PNG, лишних permissions, падений после перезагрузки расширения и расширения домена за пределы <code>https://band.wb.ru/*</code>.</p>
         <details>
           <summary>Как добавить новый файл</summary>
           <p>Добавьте WebP или PNG в папку нужного пака, сгенерируйте PNG 128x128 в <code>stickers_128/</code>, затем зарегистрируйте <code>path</code> и <code>smallPath</code> в <code>src/stickers.js</code> и разрешите оба файла в <code>manifest.json</code>. Для технических папок используйте ASCII-имена, например <code>stickers/ZHIRINOVSKIY/</code>. Новый пак добавляется отдельным объектом в <code>window.BAND_STICKER_PACKS</code>.</p>
