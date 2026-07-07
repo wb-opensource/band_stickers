@@ -397,6 +397,240 @@
       ]
     },
     {
+      id: "pupa",
+      title: "PUPA",
+      stickers: [
+        {
+          id: "pupa-0",
+          title: "PUPA 0",
+          path: "stickers/PUPA/0.webp",
+          smallPath: "stickers_128/PUPA/0.png"
+        },
+        {
+          id: "pupa-1",
+          title: "PUPA 1",
+          path: "stickers/PUPA/1.webp",
+          smallPath: "stickers_128/PUPA/1.png"
+        },
+        {
+          id: "pupa-2",
+          title: "PUPA 2",
+          path: "stickers/PUPA/2.webp",
+          smallPath: "stickers_128/PUPA/2.png"
+        },
+        {
+          id: "pupa-3",
+          title: "PUPA 3",
+          path: "stickers/PUPA/3.webp",
+          smallPath: "stickers_128/PUPA/3.png"
+        },
+        {
+          id: "pupa-4",
+          title: "PUPA 4",
+          path: "stickers/PUPA/4.webp",
+          smallPath: "stickers_128/PUPA/4.png"
+        },
+        {
+          id: "pupa-5",
+          title: "PUPA 5",
+          path: "stickers/PUPA/5.webp",
+          smallPath: "stickers_128/PUPA/5.png"
+        },
+        {
+          id: "pupa-6",
+          title: "PUPA 6",
+          path: "stickers/PUPA/6.webp",
+          smallPath: "stickers_128/PUPA/6.png"
+        },
+        {
+          id: "pupa-7",
+          title: "PUPA 7",
+          path: "stickers/PUPA/7.webp",
+          smallPath: "stickers_128/PUPA/7.png"
+        },
+        {
+          id: "pupa-8",
+          title: "PUPA 8",
+          path: "stickers/PUPA/8.webp",
+          smallPath: "stickers_128/PUPA/8.png"
+        },
+        {
+          id: "pupa-9",
+          title: "PUPA 9",
+          path: "stickers/PUPA/9.webp",
+          smallPath: "stickers_128/PUPA/9.png"
+        },
+        {
+          id: "pupa-10",
+          title: "PUPA 10",
+          path: "stickers/PUPA/10.webp",
+          smallPath: "stickers_128/PUPA/10.png"
+        },
+        {
+          id: "pupa-11",
+          title: "PUPA 11",
+          path: "stickers/PUPA/11.webp",
+          smallPath: "stickers_128/PUPA/11.png"
+        },
+        {
+          id: "pupa-12",
+          title: "PUPA 12",
+          path: "stickers/PUPA/12.webp",
+          smallPath: "stickers_128/PUPA/12.png"
+        },
+        {
+          id: "pupa-13",
+          title: "PUPA 13",
+          path: "stickers/PUPA/13.webp",
+          smallPath: "stickers_128/PUPA/13.png"
+        },
+        {
+          id: "pupa-14",
+          title: "PUPA 14",
+          path: "stickers/PUPA/14.webp",
+          smallPath: "stickers_128/PUPA/14.png"
+        },
+        {
+          id: "pupa-15",
+          title: "PUPA 15",
+          path: "stickers/PUPA/15.webp",
+          smallPath: "stickers_128/PUPA/15.png"
+        },
+        {
+          id: "pupa-16",
+          title: "PUPA 16",
+          path: "stickers/PUPA/16.webp",
+          smallPath: "stickers_128/PUPA/16.png"
+        },
+        {
+          id: "pupa-17",
+          title: "PUPA 17",
+          path: "stickers/PUPA/17.webp",
+          smallPath: "stickers_128/PUPA/17.png"
+        },
+        {
+          id: "pupa-18",
+          title: "PUPA 18",
+          path: "stickers/PUPA/18.webp",
+          smallPath: "stickers_128/PUPA/18.png"
+        },
+        {
+          id: "pupa-19",
+          title: "PUPA 19",
+          path: "stickers/PUPA/19.webp",
+          smallPath: "stickers_128/PUPA/19.png"
+        },
+        {
+          id: "pupa-20",
+          title: "PUPA 20",
+          path: "stickers/PUPA/20.webp",
+          smallPath: "stickers_128/PUPA/20.png"
+        },
+        {
+          id: "pupa-21",
+          title: "PUPA 21",
+          path: "stickers/PUPA/21.webp",
+          smallPath: "stickers_128/PUPA/21.png"
+        },
+        {
+          id: "pupa-22",
+          title: "PUPA 22",
+          path: "stickers/PUPA/22.webp",
+          smallPath: "stickers_128/PUPA/22.png"
+        },
+        {
+          id: "pupa-23",
+          title: "PUPA 23",
+          path: "stickers/PUPA/23.webp",
+          smallPath: "stickers_128/PUPA/23.png"
+        },
+        {
+          id: "pupa-24",
+          title: "PUPA 24",
+          path: "stickers/PUPA/24.webp",
+          smallPath: "stickers_128/PUPA/24.png"
+        },
+        {
+          id: "pupa-25",
+          title: "PUPA 25",
+          path: "stickers/PUPA/25.webp",
+          smallPath: "stickers_128/PUPA/25.png"
+        },
+        {
+          id: "pupa-26",
+          title: "PUPA 26",
+          path: "stickers/PUPA/26.webp",
+          smallPath: "stickers_128/PUPA/26.png"
+        },
+        {
+          id: "pupa-27",
+          title: "PUPA 27",
+          path: "stickers/PUPA/27.webp",
+          smallPath: "stickers_128/PUPA/27.png"
+        },
+        {
+          id: "pupa-28",
+          title: "PUPA 28",
+          path: "stickers/PUPA/28.webp",
+          smallPath: "stickers_128/PUPA/28.png"
+        },
+        {
+          id: "pupa-29",
+          title: "PUPA 29",
+          path: "stickers/PUPA/29.webp",
+          smallPath: "stickers_128/PUPA/29.png"
+        },
+        {
+          id: "pupa-30",
+          title: "PUPA 30",
+          path: "stickers/PUPA/30.webp",
+          smallPath: "stickers_128/PUPA/30.png"
+        },
+        {
+          id: "pupa-31",
+          title: "PUPA 31",
+          path: "stickers/PUPA/31.webp",
+          smallPath: "stickers_128/PUPA/31.png"
+        },
+        {
+          id: "pupa-32",
+          title: "PUPA 32",
+          path: "stickers/PUPA/32.webp",
+          smallPath: "stickers_128/PUPA/32.png"
+        },
+        {
+          id: "pupa-33",
+          title: "PUPA 33",
+          path: "stickers/PUPA/33.webp",
+          smallPath: "stickers_128/PUPA/33.png"
+        },
+        {
+          id: "pupa-34",
+          title: "PUPA 34",
+          path: "stickers/PUPA/34.webp",
+          smallPath: "stickers_128/PUPA/34.png"
+        },
+        {
+          id: "pupa-35",
+          title: "PUPA 35",
+          path: "stickers/PUPA/35.webp",
+          smallPath: "stickers_128/PUPA/35.png"
+        },
+        {
+          id: "pupa-36",
+          title: "PUPA 36",
+          path: "stickers/PUPA/36.webp",
+          smallPath: "stickers_128/PUPA/36.png"
+        },
+        {
+          id: "pupa-37",
+          title: "PUPA 37",
+          path: "stickers/PUPA/37.webp",
+          smallPath: "stickers_128/PUPA/37.png"
+        }
+      ]
+    },
+    {
       id: "zhirinovskiy",
       title: "Жириновский",
       stickers: [
