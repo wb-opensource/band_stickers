@@ -4,6 +4,8 @@
 
 Chrome Extension Manifest V3 для добавления локальных стикеров в Mattermost на `https://band.wb.ru`.
 
+Текущая релизная версия хранится в `manifest.json` и должна совпадать с версией внутри `extantion_band.zip`.
+
 ## Правила разработки
 
 - Расширение должно оставаться ограниченным доменом `https://band.wb.ru/*`.
@@ -28,10 +30,23 @@ Chrome Extension Manifest V3 для добавления локальных ст
 - При добавлении файла стикера обновлять `manifest.json` в `web_accessible_resources`.
 - Для GitHub Actions поддерживать проверки консистентности стикеров и базовой безопасности проекта.
 - Защищать вызовы `chrome.runtime.getURL` от `Extension context invalidated`: после перезагрузки расширения старая вкладка Mattermost не должна падать с uncaught-ошибкой.
+- Перед публикацией нового пакета в Chrome Web Store обязательно повышать `version` в `manifest.json`; Web Store отклоняет zip с версией, не большей опубликованной.
+
+## Релизы
+
+- Каждый релиз должен повышать `version` в `manifest.json` по SemVer, например `0.2.0` -> `0.2.1` или `0.3.0`.
+- Если версия отображается в документации, обновлять её в `README.md` и `docs/index.html`.
+- После повышения версии или любых релизных изменений пересобирать `extantion_band.zip` из актуальных файлов проекта.
+- В архиве `extantion_band.zip` должен лежать `manifest.json` в корне, а версия внутри архива должна совпадать с рабочим `manifest.json`.
+- В релизный zip включать runtime-файлы расширения и документацию: `manifest.json`, `src/`, `stickers/`, `stickers_128/`, `docs/`, `README.md`, `DESIGN.md`, `AGENTS.md`.
+- В релизный zip не включать `.git`, `.github`, `tests`, `.DS_Store`, старые временные архивы и локальные служебные файлы.
+- После сборки проверять архив через `unzip -t extantion_band.zip` и `unzip -p extantion_band.zip manifest.json`.
+- Релизные изменения коммитить отдельным коммитом с понятным сообщением, например `Release version 0.2.0`.
 
 ## Проверка
 
 - Проверить валидность `manifest.json`.
+- Проверить, что `manifest.json` содержит версию больше опубликованной в Chrome Web Store.
 - Загрузить расширение через `chrome://extensions` как `Load unpacked`.
 - Проверить, что кнопка появляется только на `https://band.wb.ru`.
 - Проверить, что кнопка стоит между emoji picker и загрузкой файлов в основном композере и тредах.
@@ -41,6 +56,7 @@ Chrome Extension Manifest V3 для добавления локальных ст
 - Проверить автоотправку с включенной `Моментальная отправка` и ручной режим с выключенной опцией.
 - Проверить отправку маленького стикера по умолчанию и оригинала при включенном `bigstic`.
 - Проверить отсутствие `ERR_FILE_NOT_FOUND` для каждого файла из `src/stickers.js`.
+- Для релиза проверить, что `extantion_band.zip` открывается без ошибок и содержит актуальный `manifest.json`.
 - Запустить `node tests/sticker-consistency.test.js`, `node tests/content-behavior.test.js` и `node tests/security.test.js`.
 
 ## Общие инструкции пользователя
