@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Privacy Policy | Band Mattermost Stickers</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #172033;
+        --muted: #5d687a;
+        --line: #d8deea;
+        --soft: #f5f7fb;
+        --accent: #1c58d9;
+        --ok: #287a3e;
+        --warn: #9b5b00;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #ffffff;
+        color: var(--ink);
+        font: 15px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      }
+
+      main,
+      .hero-inner,
+      .footer-inner {
+        width: min(1020px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: 28px;
+        align-items: center;
+        padding: 46px 0 34px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 14px;
+        font-size: clamp(34px, 6vw, 60px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin-bottom: 16px;
+        font-size: 24px;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .lead {
+        max-width: 680px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      .badge {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 7px 11px;
+        background: #ffffff;
+        color: #28354c;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .summary {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 18px 52px rgba(25, 37, 58, 0.12);
+        overflow: hidden;
+      }
+
+      .summary-header {
+        border-bottom: 1px solid var(--line);
+        background: var(--soft);
+        padding: 14px 16px;
+        color: #28354c;
+        font-weight: 800;
+      }
+
+      .summary-grid {
+        display: grid;
+        gap: 0;
+      }
+
+      .summary-row {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        border-bottom: 1px solid var(--line);
+        padding: 14px 16px;
+      }
+
+      .summary-row:last-child {
+        border-bottom: 0;
+      }
+
+      .status {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #eaf7ee;
+        color: var(--ok);
+        font-weight: 900;
+      }
+
+      .summary-row strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .summary-row span {
+        color: var(--muted);
+      }
+
+      section {
+        padding: 34px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #ffffff;
+        padding: 16px;
+      }
+
+      .card p {
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .table {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .table-row {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr 1fr;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .table-row:last-child {
+        border-bottom: 0;
+      }
+
+      .table-row > div {
+        padding: 12px 14px;
+      }
+
+      .table-row > div:not(:last-child) {
+        border-right: 1px solid var(--line);
+      }
+
+      .table-head {
+        background: var(--soft);
+        color: #28354c;
+        font-weight: 800;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .node {
+        display: grid;
+        place-items: center;
+        min-height: 88px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+        padding: 12px;
+        text-align: center;
+        font-weight: 750;
+      }
+
+      .arrow {
+        color: var(--accent);
+      }
+
+      details {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px 16px;
+        background: #ffffff;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      code {
+        border-radius: 6px;
+        background: var(--soft);
+        padding: 2px 5px;
+      }
+
+      footer {
+        color: var(--muted);
+        padding: 24px 0 36px;
+      }
+
+      @media (max-width: 780px) {
+        .hero-inner,
+        .cards,
+        .flow,
+        .table-row {
+          grid-template-columns: 1fr;
+        }
+
+        .table-row > div:not(:last-child) {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .arrow {
+          min-height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="hero-inner">
+        <div>
+          <h1>Privacy Policy</h1>
+          <p class="lead">This privacy policy applies to the Chrome extension <strong>Band Mattermost Stickers</strong>. The extension adds a local sticker picker to Mattermost on <code>https://band.wb.ru</code>.</p>
+          <div class="meta" aria-label="Policy metadata">
+            <span class="badge">Effective date: July 5, 2026</span>
+            <span class="badge">Chrome Extension Manifest V3</span>
+            <span class="badge">Domain-limited</span>
+            <span class="badge">No external analytics</span>
+          </div>
+        </div>
+        <aside class="summary" aria-label="Privacy summary">
+          <div class="summary-header">Review summary</div>
+          <div class="summary-grid">
+            <div class="summary-row">
+              <div class="status">OK</div>
+              <div><strong>No personal data is sold</strong><span>The extension does not sell or transfer user data for advertising.</span></div>
+            </div>
+            <div class="summary-row">
+              <div class="status">OK</div>
+              <div><strong>No remote tracking</strong><span>No analytics SDKs, tracking pixels, or developer servers are used.</span></div>
+            </div>
+            <div class="summary-row">
+              <div class="status">OK</div>
+              <div><strong>Local use statistics only</strong><span>Sticker popularity is stored in the browser on the user's device.</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <h2>Data Collection</h2>
+        <div class="cards">
+          <article class="card">
+            <h3>Personal information</h3>
+            <p>The extension does not collect names, email addresses, account identifiers, passwords, payment data, or government identifiers.</p>
+          </article>
+          <article class="card">
+            <h3>Message content</h3>
+            <p>The extension does not read, store, transmit, or analyze Mattermost message text. It only attaches the sticker file selected by the user.</p>
+          </article>
+          <article class="card">
+            <h3>Browsing activity</h3>
+            <p>The extension is limited to <code>https://band.wb.ru/*</code> and does not monitor browsing activity on other websites.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Data Stored Locally</h2>
+        <p>Band Mattermost Stickers stores a small local usage counter in the user's browser to build the <code>Popular</code> sticker tab. This data stays on the user's device and is not sent to the developer or to any third-party service.</p>
+        <div class="table" role="table" aria-label="Locally stored data">
+          <div class="table-row table-head" role="row">
+            <div role="columnheader">Data</div>
+            <div role="columnheader">Purpose</div>
+            <div role="columnheader">Storage</div>
+          </div>
+          <div class="table-row" role="row">
+            <div role="cell">Sticker ID</div>
+            <div role="cell">Sort frequently used stickers in the local <code>Popular</code> tab.</div>
+            <div role="cell">Browser <code>localStorage</code> on <code>band.wb.ru</code>.</div>
+          </div>
+          <div class="table-row" role="row">
+            <div role="cell">Use count</div>
+            <div role="cell">Show stickers used more often above stickers used less often.</div>
+            <div role="cell">Browser <code>localStorage</code> on <code>band.wb.ru</code>.</div>
+          </div>
+          <div class="table-row" role="row">
+            <div role="cell">Last used time</div>
+            <div role="cell">Break ties when stickers have the same use count.</div>
+            <div role="cell">Browser <code>localStorage</code> on <code>band.wb.ru</code>.</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>How The Extension Works</h2>
+        <div class="flow" aria-label="Extension data flow">
+          <div class="node">User opens sticker picker</div>
+          <div class="node arrow">&rarr;</div>
+          <div class="node">User selects local sticker asset</div>
+          <div class="node arrow">&rarr;</div>
+          <div class="node">Sticker is attached in Mattermost composer</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Network Requests And Third Parties</h2>
+        <p>The extension does not send data to developer-owned servers, analytics providers, advertising networks, or data brokers. Sticker assets are bundled with the extension and loaded through Chrome extension URLs. When a user sends a sticker, Mattermost handles the upload in the same way it handles a file manually attached by the user.</p>
+      </section>
+
+      <section>
+        <h2>Permissions And Site Access</h2>
+        <p>The extension runs only as a content script on <code>https://band.wb.ru/*</code>. It does not request broad Chrome permissions such as <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>identity</code>, <code>storage</code>, or host access to all websites.</p>
+      </section>
+
+      <section>
+        <h2>Data Sharing</h2>
+        <p>Band Mattermost Stickers does not sell, rent, transfer, or disclose user data. The extension does not use collected data for advertising, creditworthiness, profiling, or unrelated purposes.</p>
+      </section>
+
+      <section>
+        <h2>Data Retention And Deletion</h2>
+        <p>Local sticker usage statistics remain in the browser until the user clears site data for <code>band.wb.ru</code>, clears browser data, resets the browser profile, or removes the extension. Uninstalling the extension removes the bundled extension files from Chrome.</p>
+        <details>
+          <summary>How to clear local usage data</summary>
+          <p>In Chrome, open site settings or browsing data settings and clear local site data for <code>band.wb.ru</code>. The extension will rebuild the <code>Popular</code> tab from new sticker usage after that.</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>Children's Privacy</h2>
+        <p>The extension is intended for workplace Mattermost use and is not directed to children. It does not knowingly collect personal information from children.</p>
+      </section>
+
+      <section>
+        <h2>Changes To This Policy</h2>
+        <p>If the extension changes in a way that affects data handling, this privacy policy will be updated before or together with the new extension release.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>For privacy questions about Band Mattermost Stickers, use the support contact shown on the Chrome Web Store listing for this extension.</p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <a href="./index.html">Band Mattermost Stickers documentation</a>
+      </div>
+    </footer>
+  </body>
+</html>
