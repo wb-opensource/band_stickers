@@ -10,6 +10,16 @@
   const STATUS_TIMEOUT_MS = 2800;
   const COMPOSER_PRIME_CHARACTER = "\u200B";
   const SEND_TIMEOUT_MS = 5000;
+  const COMPOSER_ACTION_SELECTOR = [
+    "#emojiPickerButton",
+    "#fileUploadButton",
+    "#fileUploadInput",
+    "[data-testid='emojiPickerButton']",
+    "[data-testid='fileUploadButton']",
+    ".post-create__actions",
+    ".post-textbox__actions",
+    ".post-create-footer"
+  ].join(", ");
   const COMPOSER_INPUT_SELECTOR = [
     "#post_textbox",
     "#reply_textbox",
@@ -36,6 +46,7 @@
   let composerIdCounter = 0;
   let extensionContextInvalidated = false;
   let observer = null;
+  let mountPickersFrame = 0;
 
   function findComposerInput() {
     if (activeInput?.isConnected) {
@@ -288,9 +299,9 @@
 
   function closePanel() {
     const panel = document.getElementById(PANEL_ID);
-    if (panel) {
-      panel.hidden = true;
-    }
+    window.clearTimeout(statusTimer);
+    statusTimer = null;
+    panel?.remove();
     document.querySelectorAll(`.${BUTTON_CLASS}`).forEach((button) => {
       button.setAttribute("aria-expanded", "false");
     });
@@ -322,17 +333,20 @@
       return;
     }
 
-    panel.hidden = !panel.hidden;
+    if (!panel.hidden) {
+      closePanel();
+      return;
+    }
+
+    panel.hidden = false;
     document.querySelectorAll(`.${BUTTON_CLASS}`).forEach((otherButton) => {
       otherButton.setAttribute("aria-expanded", "false");
     });
     if (button) {
-      button.setAttribute("aria-expanded", String(!panel.hidden));
+      button.setAttribute("aria-expanded", "true");
     }
 
-    if (!panel.hidden) {
-      positionPanel();
-    }
+    positionPanel();
   }
 
   function positionPanel() {
@@ -501,10 +515,6 @@
     button.addEventListener("click", (event) => handleButtonClick(event, input, root));
 
     root.append(button);
-    if (!document.getElementById(PANEL_ID)) {
-      createPanel();
-    }
-
     attachGlobalListeners();
 
     return root;
@@ -878,9 +888,6 @@
     if (!root) {
       root = createRoot(input);
     }
-    if (!document.getElementById(PANEL_ID)) {
-      createPanel();
-    }
 
     if (actionRow.before?.parentElement === actionRow.row && root.nextElementSibling !== actionRow.before) {
       actionRow.row.insertBefore(root, actionRow.before);
@@ -912,6 +919,56 @@
     }
   }
 
+  function scheduleMountPickers() {
+    if (extensionContextInvalidated || mountPickersFrame) {
+      return;
+    }
+
+    mountPickersFrame = window.requestAnimationFrame(() => {
+      mountPickersFrame = 0;
+      mountPickers();
+    });
+  }
+
+  function isOwnNode(element) {
+    return Boolean(
+      element?.closest?.(`.${ROOT_CLASS}, #${PANEL_ID}`)
+    );
+  }
+
+  function isComposerRelatedNode(node) {
+    const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+
+    if (!element || isOwnNode(element)) {
+      return false;
+    }
+
+    return Boolean(
+      element.matches?.(COMPOSER_INPUT_SELECTOR) ||
+      element.matches?.(COMPOSER_ACTION_SELECTOR) ||
+      element.querySelector?.(COMPOSER_INPUT_SELECTOR) ||
+      element.querySelector?.(COMPOSER_ACTION_SELECTOR)
+    );
+  }
+
+  function shouldScheduleMountPickers(mutations) {
+    return mutations.some((mutation) => {
+      for (const node of mutation.addedNodes) {
+        if (isComposerRelatedNode(node)) {
+          return true;
+        }
+      }
+
+      for (const node of mutation.removedNodes) {
+        if (isComposerRelatedNode(node)) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+  }
+
   function rememberActiveInput(event) {
     const input = event.target.closest
       ? event.target.closest(COMPOSER_INPUT_SELECTOR)
@@ -932,8 +989,10 @@
   document.addEventListener("focusin", rememberActiveInput);
   mountPickers();
 
-  observer = new MutationObserver(() => {
-    window.requestAnimationFrame(mountPickers);
+  observer = new MutationObserver((mutations) => {
+    if (shouldScheduleMountPickers(mutations)) {
+      scheduleMountPickers();
+    }
   });
 
   observer.observe(document.documentElement, {

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Band Mattermost Stickers",
   "description": "Adds a sticker picker to Mattermost on band.wb.ru.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "content_scripts": [
     {
       "matches": [
